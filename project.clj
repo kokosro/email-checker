@@ -1,8 +1,8 @@
-(defproject emailchecker "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+(defproject emailchecker "0.1.0"
+  :description "Different functions related to email"
+  :url "https://github.com/kokosro/email-checker"
+  :license {:name "internal"
+            :url "#underdev"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojars.kokos/clj-sockets "0.1.1"]
                  [com.brweber2/clj-dns "0.0.2"]
@@ -13,10 +13,9 @@
                                                     javax.jms/jms
                                                     com.sun.jmdk/jmxtools
                                                     com.sun.jmx/jmxri]]
-                 ;; trying aleph .. again
+                 
                  [aleph "0.4.2-alpha8"]
                  [gloss "0.2.5"]
-                 
                  [com.draines/postal "2.0.2"]]
   :uberjar-name "emailchecker.jar"
   :main ^:skip-aot emailchecker.core
