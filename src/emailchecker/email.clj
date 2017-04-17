@@ -166,5 +166,5 @@
                                   (csv/read-csv in-file)))))))
 
 (defn exists?
-  [email helo]
-  (if (:error? (check email helo)) false true))
+  [email]
+  (if (:error? (check email)) false true))
