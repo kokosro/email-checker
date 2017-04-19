@@ -137,7 +137,7 @@
                         [#(do (log/info (format "checking %s" %))
                             (format "EHLO %s" (or (first helo) "localhost")))
                          #(format "MAIL FROM:<%s>" %)
-                         ;#(format "RCPT TO:<%s>" %)
+                         #(format "RCPT TO:<%s>" %)
                          ])
               ;_ (ms/put! socket "QUIT")
               _ (get-next-response socket timeout)
