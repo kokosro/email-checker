@@ -11,6 +11,7 @@
           [clojure.tools.logging :as log]
           [gloss.core :as gloss]
     	[gloss.io :as gio])
+  (:import (org.xbill.DNS Type))
   (:gen-class))
 
 
@@ -40,7 +41,7 @@
   (d/chain (tcp/client {:host host, :port port :ssl? ssl? :insecure? insecure?})
     #(wrap-duplex-stream protocol %)))
 
-(import 'org.xbill.DNS.Type)
+;(import 'org.xbill.DNS.Type)
 (defn get-mx [domain]
   (let [mxs (:answers (dns/dns-lookup domain Type/MX))
         _ (log/info "all MXs for " domain (map #(-> % .getTarget .toString)
@@ -105,7 +106,7 @@
     (first (s/split email #"@"))))
 
 (defn check
-  [email]
+  [email & helo]
   (if (valid-format? email)
     (let [host (get-mx (get-domain email))
           port 25
@@ -134,7 +135,7 @@
                             ok?)))
                         (error? f1)
                         [#(do (log/info (format "checking %s" %))
-                            (format "EHLO %s" "storage.life.kokos.ro"))
+                            (format "EHLO %s" (or (first helo) "localhost")))
                          #(format "MAIL FROM:<%s>" %)
                          #(format "RCPT TO:<%s>" %)])
               _ (ms/put! socket "QUIT")
@@ -145,6 +146,11 @@
          :message "MXmissing"}))
     {:error? true
      :message "invalidformat"}))
+
+
+(defn exists? 
+  [email & helo]
+  (not (:error? (check email (first helo)))))
 
 (defn check-csv
   [file-name]
@@ -162,6 +168,9 @@
       []
       (csv/read-csv in-file)))))
     (log/info (format "checked emails results saved in %s" (str file-name ".out5.csv")))))
+
+
+
 
 
 
